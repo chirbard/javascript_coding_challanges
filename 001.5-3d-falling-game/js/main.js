@@ -129,11 +129,11 @@ function init() {
     updatePhysics();
     renderer.render(scene, camera);
   }
-  lastTime = time;
+  // lastTime = time;
 }
 
 function updatePhysics() {
-  world.stop(1 / 60); // stop the physics world
+  world.step(1 / 60); // stop the physics world
 
   // copy coordinates from cannonjs to threejs
   overhangs.forEach((element) => {
