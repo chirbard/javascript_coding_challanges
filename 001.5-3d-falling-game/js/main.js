@@ -80,8 +80,8 @@ function init() {
         topLayer.threejs.position[direction] -= delta / 2;
 
         // next layer
-        const nectX = direction == 'x' ? topLayer.threejs.position.x : -10;
-        const nectZ = direction == 'z' ? topLayer.threejs.position.z : -10;
+        const nextX = direction == 'x' ? topLayer.threejs.position.x : -10;
+        const nextZ = direction == 'z' ? topLayer.threejs.position.z : -10;
         const nextDirection = direction == 'x' ? 'z' : 'x';
 
         addLayer(nextX, nextZ, newWidth, newDepth, nextDirection);
