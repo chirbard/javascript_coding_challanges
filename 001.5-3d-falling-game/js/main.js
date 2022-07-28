@@ -2,6 +2,7 @@ let camera, scene, renderer; // Three.js golbals
 const originalBoxSize = 3; // original size of the box
 const boxHeight = 1;
 let stack = [];
+let overhangs = [];
 let gameStarted = false;
 
 init();
@@ -79,6 +80,22 @@ function init() {
         topLayer.threejs.scale[direction] = overlap / size;
         topLayer.threejs.position[direction] -= delta / 2;
 
+        // overhang
+        const overhangShift =
+          (overlap / 2 + overhangSize / 2) * Math.sign(delta);
+        const overhangX =
+          direction == 'x'
+            ? topLayer.threejs.position.x + overhangShift
+            : topLayer.threejs.position.x;
+        const overhangZ =
+          direction == 'z'
+            ? topLayer.threejs.position.z + overhangShift
+            : topLayer.threejs.position.z;
+        const overhangWidth = direction == 'x' ? overhangSize : newWidth;
+        const overhangDepth = direction == 'z' ? overhangSize : newDepth;
+
+        addOverhang(overhangX, overhangZ, overhangWidth, overhangDepth);
+
         // next layer
         const nextX = direction == 'x' ? topLayer.threejs.position.x : -10;
         const nextZ = direction == 'z' ? topLayer.threejs.position.z : -10;
@@ -110,6 +127,12 @@ function addLayer(x, z, width, depth, direction) {
   layer.direction = direction;
 
   stack.push(layer);
+}
+
+function addOverhang(x, z, width, depth) {
+  const y = boxHeight * (stack.length - 1); // add the box on the same layer
+  const overhang = generateBox(x, y, z, width, depth);
+  overhangs.push(overhang);
 }
 
 function generateBox(x, y, z, width, depth) {
