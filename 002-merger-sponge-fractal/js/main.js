@@ -1,13 +1,14 @@
+// tseeni üles seadmine
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+scene.background = new THREE.Color(0x202020);
 
-// box
+// teeb kasti, lisab selle arraysse ja lisab selle tseeni
 var sponge = [];
 var b = new Box(0, 0, 0, 1);
 sponge.push(b);
 sponge[0].show();
 
-// Set up lights
+// Tulede üles seadmine
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
 scene.add(ambientLight);
 
@@ -24,7 +25,8 @@ const camera = new THREE.PerspectiveCamera(
   100 // far plane
 );
 
-camera.position.set(0, 0, 0);
+// kaamera algpositsioon
+camera.position.set(0, 1, 0);
 camera.lookAt(0, 0, 0);
 
 // Renderer
@@ -35,42 +37,39 @@ renderer.render(scene, camera);
 // Add it to HTML
 document.body.appendChild(renderer.domElement);
 
-i = 0;
-
+// kaamera keerleb ümber keha
+fraction = 0;
 function animate() {
   requestAnimationFrame(animate);
-
-  camera.position.x = Math.sin((Math.PI / 500) * i) * 3;
-  camera.position.z = Math.cos((Math.PI / 500) * i) * 3;
-  i++;
-
+  camera.position.x = Math.sin((Math.PI / 500) * fraction) * 3;
+  camera.position.z = Math.cos((Math.PI / 500) * fraction) * 3;
+  fraction++;
   camera.lookAt(0, 0, 0);
-
   renderer.render(scene, camera);
 }
-
 animate();
 
-document.body,
-  addEventListener('click', function () {
-    // var newList = b.generate();
-    // sponge = newList;
-    while (scene.children.length > 0) {
-      scene.remove(scene.children[0]);
-    }
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
+// hiire vajutus
+document.body.addEventListener('click', function () {
+  // puhastab tseeni
+  while (scene.children.length > 0) {
+    scene.remove(scene.children[0]);
+  }
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-    dirLight.position.set(10, 20, 0); // x, y, z
-    scene.add(dirLight);
+  //lisab tuled uuesti
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  scene.add(ambientLight);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+  dirLight.position.set(10, 20, 0); // x, y, z
+  scene.add(dirLight);
 
-    var next = [];
-    for (var i = 0; i < sponge.length; i++) {
-      next = next.concat(sponge[i].generate());
-    }
-    sponge = next;
-    for (var i = 0; i < sponge.length; i++) {
-      sponge[i].show();
-    }
-  });
+  // teeb uued väiksemad kastid
+  var next = [];
+  for (var i = 0; i < sponge.length; i++) {
+    next = next.concat(sponge[i].generate());
+  }
+  sponge = next;
+  for (var i = 0; i < sponge.length; i++) {
+    sponge[i].show();
+  }
+});

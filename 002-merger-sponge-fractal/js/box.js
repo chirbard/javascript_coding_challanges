@@ -4,6 +4,7 @@ class Box {
     this.r_ = r_;
   }
 
+  // loob väiksemad kastid mille suurus on 3 ja asend on 0st eelmine ja järgmine
   generate() {
     var boxes = [];
     for (var x = -1; x < 2; x++) {
@@ -26,12 +27,12 @@ class Box {
     return boxes;
   }
 
+  // lisab kasti tseeni
   show() {
-    // Add a cube to the scene
-    const geometry = new THREE.BoxGeometry(this.r_, this.r_, this.r_); // width, height, depth
+    const geometry = new THREE.BoxGeometry(this.r_, this.r_, this.r_);
     const material = new THREE.MeshLambertMaterial({ color: 0xfb8e00 });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(this.pos.x, this.pos.y, this.pos.z); // Optional, 0,0,0 is the default
+    mesh.position.set(this.pos.x, this.pos.y, this.pos.z);
     scene.add(mesh);
   }
 }
